@@ -1,3 +1,5 @@
+/* ComfyDB is released under the MIT licencse */
+
 /**
  *  class ComfyDB
  **/
