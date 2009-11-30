@@ -8,7 +8,7 @@ ComfyDB goes a step further to **ensure the integrity of your data**. The native
 string. ComfyDB passes everything you save through a JSON filter, ensuring that when put data in, you will get it
 back in the correct data-type.
 
-**ComfyDB is supported in all major browsers**, including Safari 4, Firefox 3.5 and IE8. If a browser supports
+**ComfyDB is supported in all major browsers**, including Safari 4, Chrome, Firefox 3.5 and IE8. If a browser supports
 localStorage, it can run ComfyDB.
 
 ## Simple examples: ##
