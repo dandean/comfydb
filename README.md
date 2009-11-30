@@ -63,3 +63,5 @@ console.log(gold);
 **ComfyDB** is built on [prototype.js](http://www.prototypejs.org/), and implements
 [Enumerable](http://api.prototypejs.org/language/enumerable.html), so every method available to Enumerable is at your
 disposal for quickly and easily working with your data.
+
+**ComfyDB is free, and released under the MIT license**.
