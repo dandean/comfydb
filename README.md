@@ -51,7 +51,7 @@ console.log(gold);
 
 ## More Information ##
 
-**Check out the [source](blob/master/src/comfydb.js) for more specific usage information.**
+**Check out the [source](http://github.com/dandean/comfydb/blob/master/src/comfydb.js) for more specific usage information.**
 
 **ComfyDB** is built on [prototype.js](http://www.prototypejs.org/), and inherits from
 [Enumerable](http://api.prototypejs.org/language/enumerable.html), so every method available to Enumerable is at your
