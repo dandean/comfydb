@@ -1,4 +1,6 @@
-/* ComfyDB is released under the MIT licencse */
+/* ComfyDB version 1.0 - (c) 2009 Dan Dean
+ * ComfyDB is freely distributable under the terms of the MIT license.
+ *--------------------------------------------------------------------------*/
 
 /**
  *  class ComfyDB
