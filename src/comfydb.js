@@ -112,7 +112,6 @@ var ComfyDB = Class.create(Enumerable, (function() {
 		 *  ComfyDB#refresh() -> this
 		 **/
 		refresh: function() {
-			console.info("refresh");
 			if (this.db && this.db._dbconfig && this.db._dbconfig.name) {
 				this._dirty = false;
 				this.db = this._storage.getItem(this.db._dbconfig.name).evalJSON();
