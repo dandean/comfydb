@@ -8,8 +8,15 @@ ComfyDB goes a step further to **ensure the integrity of your data**. The native
 string. ComfyDB passes everything you save through a JSON filter, ensuring that when put data in, you will get it
 back in the correct data-type.
 
-**ComfyDB is supported in all major browsers**, including Safari 4, Chrome, Firefox 3.5 and IE8. If a browser supports
-localStorage, it can run ComfyDB.
+**N'Sync**: One of the great things about localStorage is that when you modify your data the "storage" event is fired
+in every window. This notifies other instances of your application, which may be running in other tabs or windows, about
+changes to your runtime application state. The sad sad sad part is that every browser implements this event differently.
+ComfyDB takes care of the ugly parts and ensures that the correct event handlers are set up. ComfyDB uses
+**feature detection rather than user-agent sniffing**, so ComfyDB will continue to work as expected as browsers
+normalize their behavior.
+
+**ComfyDB is supported in all major modern browsers**, including Safari 4, Chrome, Firefox 3.5 and IE8. If a browser
+supports localStorage, it can run ComfyDB.
 
 ## Simple examples: ##
 
