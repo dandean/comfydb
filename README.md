@@ -42,8 +42,8 @@ db.remove("gold-pants");
 ### Find all user properties which match specific criteria ###
 
 <pre>
-var gold = db.findAll(function(prop) {
-	return prop.key.match(/gold/i);
+var gold = db.findAll(function(item) {
+	return item.key.match(/gold/i);
 });
 console.log(gold);
 // --> [{key: "golden-sword", value: true}, {key: "gold-coins", value: 3000}]
