@@ -2,7 +2,50 @@
  *  class ComfyDB
  **/
 var ComfyDB = Class.create(Enumerable, (function() {
+	
+	var STORAGE_EVENT_FIRED_ON_BODY = false,
+	    STORAGE_EVENT_FIRED_ON_BODY_ELEMENT = false,
+	    STORAGE_EVENT_FIRED_ON_DOCUMENT = false,
+	    STORAGE_EVENT_HAS_KEY_NAME = false,
+	    tempStorageKey = "__TEST_STORAGE_KEY_" + Math.round(Math.random() * 10000000);
+	
+	function onDocumentStorage(e) {
+		STORAGE_EVENT_FIRED_ON_DOCUMENT = true;
+		cleanup(e);
+	}
+	
+	function onBodyElementStorage(e) {
+		STORAGE_EVENT_FIRED_ON_BODY_ELEMENT = true;
+		cleanup(e);
+	}
 
+	function onBodyStorage(e) {
+		STORAGE_EVENT_FIRED_ON_BODY = true;
+		cleanup(e);
+	}
+	
+	function cleanup(e) {
+		document.body.stopObserving("storage", onBodyStorage);
+		document.body.onstorage = null;
+		document.stopObserving("storage", onDocumentStorage);
+		STORAGE_EVENT_HAS_KEY_NAME = (e && "key" in e && e.key == tempStorageKey);
+		localStorage.removeItem(tempStorageKey);
+	}
+	
+	function test() {
+		document.body.observe("storage", onBodyStorage);
+		document.body.onstorage = onBodyElementStorage;
+		document.observe("storage", onDocumentStorage);
+		localStorage.setItem(tempStorageKey, Math.random());
+		document.fire("storage:tests:complete");
+	}
+	
+	if (document.loaded) {
+		test();
+	} else {
+		document.observe("dom:loaded", test);
+	}
+	
 	// Saves and returns an instance
 	function _save(instance) {
 		instance._storage.setItem(instance.db._dbconfig.name, Object.toJSON(instance.db));
@@ -28,6 +71,31 @@ var ComfyDB = Class.create(Enumerable, (function() {
 				this.db = {_dbconfig: conf};
 				_save(this);
 			}
+			
+			var bindStorageEvent = function() {
+				if (STORAGE_EVENT_FIRED_ON_BODY || STORAGE_EVENT_FIRED_ON_DOCUMENT) {
+					// Firefox fires on the body, IE fires on the document.
+					Event.observe(((STORAGE_EVENT_FIRED_ON_BODY) ? document.body : document), "storage", this.__onStorage.bind(this));
+				} else if (STORAGE_EVENT_FIRED_ON_BODY_ELEMENT) {
+					// WebKit requires event handler explicitly on the "BODY" element.
+					document.body.onstorage = this.__onStorage.bind(this);
+				}
+			}.bind(this);
+
+			if (document.loaded) {
+				bindStorageEvent();
+			} else {
+				document.observe("storage:tests:complete", bindStorageEvent);
+			}
+		},
+		
+		__onStorage: function(e) {
+			// If key is given, only mark data as dirty if necessary. Otherwise just mark it as dirty.
+			// This means that browsers that support the "key" property will be much more efficient, others will
+			// refresh their data a lot more -- when anything in the entire storage changes.
+			if (!STORAGE_EVENT_HAS_KEY_NAME || STORAGE_EVENT_HAS_KEY_NAME && e.key == this.db._dbconfig.name) {
+				this._dirty = true;
+			}
 		},
 		
 		/**
@@ -41,10 +109,25 @@ var ComfyDB = Class.create(Enumerable, (function() {
 		},
 		
 		/**
+		 *  ComfyDB#refresh() -> this
+		 **/
+		refresh: function() {
+			console.info("refresh");
+			if (this.db && this.db._dbconfig && this.db._dbconfig.name) {
+				this._dirty = false;
+				this.db = this._storage.getItem(this.db._dbconfig.name).evalJSON();
+			} else {
+				throw 'ComfyDB, "Can not refresh data, invalid configuration"';
+			}
+			return this;
+		},
+		
+		/**
 		 *  ComfyDB#get(key) -> value
 		 *  - key (String)
 		 **/
 		get: function(key) {
+			if (this._dirty) this.refresh();
 			return (key == "_dbconfig") ? undefined : this.db[key] ;
 		},
 		
@@ -52,6 +135,9 @@ var ComfyDB = Class.create(Enumerable, (function() {
 		 *  ComfyDB#save(key, value) -> this
 		 *  - key (String)
 		 *  - value (Object)
+		 *
+		 *  Saves the key/value pair to the storage interface. If no arguments are given, the data present data
+		 *  is resaved to the storage interface as is.
 		 **/
 		save: function(key, value) {
 			if (arguments.length > 0) this.db[key] = value;
