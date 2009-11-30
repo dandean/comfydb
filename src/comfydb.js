@@ -11,7 +11,8 @@ var ComfyDB = Class.create(Enumerable, (function() {
 	    STORAGE_EVENT_FIRED_ON_BODY_ELEMENT = false,
 	    STORAGE_EVENT_FIRED_ON_DOCUMENT = false,
 	    STORAGE_EVENT_HAS_KEY_NAME = false,
-	    tempStorageKey = "__TEST_STORAGE_KEY_" + Math.round(Math.random() * 10000000);
+	    tempStorageKey = "__TEST_STORAGE_KEY_" + Math.round(Math.random() * 10000000),
+	    featureTestsComplete = false;
 	
 	function onDocumentStorage(e) {
 		STORAGE_EVENT_FIRED_ON_DOCUMENT = true;
@@ -34,6 +35,8 @@ var ComfyDB = Class.create(Enumerable, (function() {
 		document.stopObserving("storage", onDocumentStorage);
 		STORAGE_EVENT_HAS_KEY_NAME = (e && "key" in e && e.key == tempStorageKey);
 		localStorage.removeItem(tempStorageKey);
+		featureTestsComplete = true;
+		document.fire("storage:tests:complete");
 	}
 	
 	function test() {
@@ -41,7 +44,6 @@ var ComfyDB = Class.create(Enumerable, (function() {
 		document.body.onstorage = onBodyElementStorage;
 		document.observe("storage", onDocumentStorage);
 		localStorage.setItem(tempStorageKey, Math.random());
-		document.fire("storage:tests:complete");
 	}
 	
 	if (document.loaded) {
@@ -86,7 +88,7 @@ var ComfyDB = Class.create(Enumerable, (function() {
 				}
 			}.bind(this);
 
-			if (document.loaded) {
+			if (featureTestsComplete) {
 				bindStorageEvent();
 			} else {
 				document.observe("storage:tests:complete", bindStorageEvent);
