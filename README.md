@@ -1,10 +1,8 @@
-ComfyDB: an easy, unified and powerful localStorage/sessionStorage API
-======================================================================
+# ComfyDB: an easy, unified and powerful localStorage/sessionStorage API #
 
-Simple examples:
+## Simple examples: ##
 
-Create a new data store for a user, then store some of their data:
-------------------------------------------------------------------
+### Create a new data store for a user, then store some of their data: ###
 
 <pre>
 var db = new ComfyDB("user:dan");
@@ -16,23 +14,20 @@ db.save("lives", 3)
   .save("gold-pants", true);
 </pre>
 
-Get some data about our user:
------------------------------
+### Get some data about our user: ###
 
 <pre>
 var lives = db.get("lives");
 console.log(lives);
 </pre>
 
-Remove data about our user:
----------------------------
+### Remove data about our user: ###
 
 <pre>
 db.remove("gold-pants");
 </pre>
 
-Find all user properties which match specific criteria
-------------------------------------------------------
+### Find all user properties which match specific criteria ###
 
 <pre>
 var gold = db.findAll(function(prop) {
@@ -41,7 +36,10 @@ var gold = db.findAll(function(prop) {
 console.log(gold);
 </pre>
 
-*Check out the source for more specific usage information.*
+## More Information ##
 
-*ComfyDB* is built on prototype.js, and inherits from Enumerable, so every method available to Enumerable is at your
+**Check out the [source](/blob/master/src/comfydb.js) for more specific usage information.**
+
+**ComfyDB** is built on [prototype.js](http://www.prototypejs.org/), and inherits from
+[Enumerable](http://api.prototypejs.org/language/enumerable.html), so every method available to Enumerable is at your
 disposal for quickly and easily working with your data.
