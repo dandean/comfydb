@@ -19,6 +19,7 @@ db.save("lives", 3)
 <pre>
 var lives = db.get("lives");
 console.log(lives);
+// --> 3
 </pre>
 
 ### Remove data about our user: ###
@@ -34,11 +35,12 @@ var gold = db.findAll(function(prop) {
 	return prop.key.match(/gold/i);
 });
 console.log(gold);
+// --> [{key: "golden-sword", value: true}, {key: "gold-coins", value: 3000}]
 </pre>
 
 ## More Information ##
 
-**Check out the [source](/blob/master/src/comfydb.js) for more specific usage information.**
+**Check out the [source](blob/master/src/comfydb.js) for more specific usage information.**
 
 **ComfyDB** is built on [prototype.js](http://www.prototypejs.org/), and inherits from
 [Enumerable](http://api.prototypejs.org/language/enumerable.html), so every method available to Enumerable is at your
