@@ -1,6 +1,6 @@
 # ComfyDB: an easy, unified and powerful localStorage/sessionStorage API #
 
-ComfyDB uses the new localStorage and sessionStorage API to enable you to store persistent data with your
+ComfyDB uses the HTML5 localStorage and sessionStorage API to enable you to store persistent data with your
 web applications. ComfyDB exposes a **robust functional API** for individual data stores on top of the rather limited
 [native key/value pair API](http://dev.w3.org/html5/webstorage/).
 
